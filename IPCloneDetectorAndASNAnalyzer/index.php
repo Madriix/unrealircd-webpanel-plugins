@@ -732,6 +732,7 @@ foreach ($users as $entry) {
                         $ipv6Count++;
                     }
                 }
+
                 if (isset($obj->user)) {
                     if (isset($obj->user->account)) {
                         $accountCount++;
@@ -741,33 +742,50 @@ foreach ($users as $entry) {
                 }
             }
 
+            // éviter division par zéro
+            if ($usersCount > 0) {
+                $ipv4CountPercentage = round(($ipv4Count / $usersCount) * 100, 2) . '%';
+                $ipv6CountPercentage = round(($ipv6Count / $usersCount) * 100, 2) . '%';
+                $accountCountPercentage = round(($accountCount / $usersCount) * 100, 2) . '%';
+                $noAccountCountPercentage = round(($noAccountCount / $usersCount) * 100, 2) . '%';
+            } else {
+                $ipv4CountPercentage = $ipv6CountPercentage = $accountCountPercentage = $noAccountCountPercentage = '-';
+            }
+
             echo "<table class='table-striped' border='1'>
-                        <tr>
-                            <th>Type</th>
-                            <th>Online number</th>
-                        </tr>
-                        <tr>
-                            <td>Number of total users</td>
-                            <td>{$usersCount}</td>
-                        </tr>
-                        <tr>
-                            <td>Number of IPv4</td>
-                            <td>{$ipv4Count}</td>
-                        </tr>
-                        <tr>
-                            <td>Number of IPv6</td>
-                            <td>{$ipv6Count}</td>
-                        </tr>
-                        <tr>
-                            <td>Number of account</td>
-                            <td>{$accountCount}</td>
-                        </tr>
-                        <tr>
-                            <td>Number of no account</td>
-                            <td>{$noAccountCount}</td>
-                        </tr>
-                    </table>";
+                <tr>
+                    <th>Type</th>
+                    <th>Online number</th>
+                    <th>Percentage</th>
+                </tr>
+                <tr>
+                    <td>Number of total users</td>
+                    <td>{$usersCount}</td>
+                    <td>-</td>
+                </tr>
+                <tr style=\"border-top:solid 3px #000;\">
+                    <td>Number of IPv4</td>
+                    <td>{$ipv4Count}</td>
+                    <td>{$ipv4CountPercentage}</td>
+                </tr>
+                <tr>
+                    <td>Number of IPv6</td>
+                    <td>{$ipv6Count}</td>
+                    <td>{$ipv6CountPercentage}</td>
+                </tr>
+                <tr style=\"border-top:solid 3px #000;\">
+                    <td>Number of account</td>
+                    <td>{$accountCount}</td>
+                    <td>{$accountCountPercentage}</td>
+                </tr>
+                <tr>
+                    <td>Number of no account</td>
+                    <td>{$noAccountCount}</td>
+                    <td>{$noAccountCountPercentage}</td>
+                </tr>
+            </table>";
             ?>
+
 
 
             <h4 class="mt-4">Bans server corresponding to '~asn:'</h4>
